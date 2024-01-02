@@ -32,7 +32,7 @@ namespace BookMovie2.Controllers
             _userService.AddUser(user);
         }
 
-        [HttpGet]
+        [HttpGet("GetUserByUserId")]
         public User GetUserByUserId(int userId)
         {
            return _userService.GetUserByUserId(userId);
