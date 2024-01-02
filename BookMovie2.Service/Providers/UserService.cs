@@ -34,6 +34,11 @@ namespace BookMovie2.Service.Providers
            return _mapper.Map<List<User>>(data);
         }
 
+        public User GetUserByUserId(int userId) {
+            var user = _repository.User.GetById(userId);
+            return _mapper.Map<User>(user);
+        }                             
+
     
 
     }

@@ -13,5 +13,7 @@ namespace BookMovie2.Service.Contracts
         IEnumerable<User> GetAll();
 
         void AddUser(User user);
+
+        User GetUserByUserId(int userId);
     }
 }

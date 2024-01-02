@@ -19,7 +19,7 @@ namespace BookMovie2.Controllers
           
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IEnumerable<User> Get() 
         {
             return _userService.GetAll();
@@ -30,6 +30,12 @@ namespace BookMovie2.Controllers
         {
 
             _userService.AddUser(user);
+        }
+
+        [HttpGet]
+        public User GetUserByUserId(int userId)
+        {
+           return _userService.GetUserByUserId(userId);
         }
 
 
