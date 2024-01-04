@@ -1,4 +1,5 @@
-﻿using BookMovie2.Data;
+﻿using AutoMapper;
+using BookMovie2.Data;
 using BookMovie2.Data.Contracts;
 using BookMovie2.Service.Contracts;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +17,14 @@ namespace BookMovie2.Service.Providers
     public class AuthService : IAuthService
 
     { 
-                private readonly IConfiguration _config;
-                 private IUnitOfWork _repository;
-        public AuthService(IConfiguration configuration, IUnitOfWork unitOfWork)
+        private readonly IConfiguration _config;
+        private IUnitOfWork _repository;
+        private IMapper _mapper;
+        public AuthService(IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
                 {
                     _config = configuration;
                     _repository = unitOfWork;
+                    _mapper = mapper;
 
                 }
     
@@ -49,6 +52,19 @@ namespace BookMovie2.Service.Providers
                 return new AuthenticatedResponse { Token = tokenString, Message = "" };
             }
             return new AuthenticatedResponse {Token="", Message = "NO TOKEN Generated" };
+        }
+
+        public string Signup(Models.User user)
+        {
+           if(user != null)
+            {
+                var dbUser = _mapper.Map<User>(user);
+                _repository.User.Add(dbUser);
+                _repository.Save();
+                return "User is added";
+            }
+           else
+            { return "Invalid user!!!"; }
         }
     }
 }
