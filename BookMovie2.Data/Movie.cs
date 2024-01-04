@@ -18,6 +18,8 @@ namespace BookMovie2.Data
         public string? MovieName { get; set; }
 
         public string? Genre { get; set; }
+
+        public string? moviePoster { get; set; }
         public ICollection<Audi>? Theatres { get; set; }
 
 
