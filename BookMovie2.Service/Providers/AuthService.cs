@@ -30,14 +30,9 @@ namespace BookMovie2.Service.Providers
     
         public AuthenticatedResponse Login(LoginModel user)
         {
-            var test = user;
-            Console.WriteLine(test);
 
-           //var  _repository.User.Get(x => x.UserName == user.UserName);
-               
-                
-
-            if (user.UserName == "johndoe" && user.Password == "def@123")
+            var dbUser = _repository.User.FirstOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            if (dbUser != null)
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -49,7 +44,7 @@ namespace BookMovie2.Service.Providers
                     signingCredentials: signinCredentials
                 );
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return new AuthenticatedResponse { Token = tokenString, Message = "" };
+                return new AuthenticatedResponse { Token = tokenString, Message = "" , Username = user.UserName };
             }
             return new AuthenticatedResponse {Token="", Message = "NO TOKEN Generated" };
         }
