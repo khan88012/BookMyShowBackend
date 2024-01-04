@@ -10,5 +10,7 @@ namespace BookMovie2.Models
     {
         public int UserId { get; set; }
         public String? UserName { get; set; }
+
+        public String? Password { get; set; }
     }
 }

@@ -16,6 +16,8 @@ namespace BookMovie2.Data
         public int UserId { get; set; }
         public String? UserName { get; set; }
 
+        public String? Password { get; set; }
+
         public ICollection<Booking>? Bookings { get; set; }
     }
 }
