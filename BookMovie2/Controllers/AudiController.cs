@@ -42,7 +42,7 @@ namespace BookMovie2.Controllers
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
-        [Authorize]
+        
         [HttpGet("GetTheatresByMovieId")]
         public IEnumerable<TheatreByMovieResponse> GetTheatersByMovieId(string id)
         {
