@@ -8,6 +8,6 @@ namespace BookMovie2.Data.Contracts
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-
+        public User GetById(int id);
     }
 }

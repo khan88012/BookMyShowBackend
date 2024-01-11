@@ -11,5 +11,7 @@ namespace BookMovie2.Service.Contracts
     {
         AuthenticatedResponse Login(LoginModel user);
 
+        String Signup(Models.User user);
+
     }
 }

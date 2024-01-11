@@ -21,6 +21,9 @@ namespace BookMovie2.Models
 
         public string? Genre { get; set; }
 
+        public string? moviePoster { get; set; }
+
+
 
     }
 }

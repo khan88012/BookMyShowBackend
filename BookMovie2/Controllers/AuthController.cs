@@ -36,5 +36,19 @@ namespace BookMovie2.Controllers
               return  _authService.Login(user);
             }
         }
+
+        [HttpPost("Signup")]
+        public String Signup(Models.User user)
+        {
+            if (user != null)
+            {
+                
+                _authService.Signup(user);
+                return "Signup Successfull!!";
+            }
+            else { return "Invalid User"; }
+
+            return "signup";
+        }
     }
 }

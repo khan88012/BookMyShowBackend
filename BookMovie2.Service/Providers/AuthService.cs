@@ -1,4 +1,5 @@
-﻿using BookMovie2.Data;
+﻿using AutoMapper;
+using BookMovie2.Data;
 using BookMovie2.Data.Contracts;
 using BookMovie2.Service.Contracts;
 using Microsoft.Extensions.Configuration;
@@ -16,25 +17,22 @@ namespace BookMovie2.Service.Providers
     public class AuthService : IAuthService
 
     { 
-                private readonly IConfiguration _config;
-                 private IUnitOfWork _repository;
-        public AuthService(IConfiguration configuration, IUnitOfWork unitOfWork)
+        private readonly IConfiguration _config;
+        private IUnitOfWork _repository;
+        private IMapper _mapper;
+        public AuthService(IConfiguration configuration, IUnitOfWork unitOfWork, IMapper mapper)
                 {
                     _config = configuration;
                     _repository = unitOfWork;
+                    _mapper = mapper;
 
                 }
     
         public AuthenticatedResponse Login(LoginModel user)
         {
-            var test = user;
-            Console.WriteLine(test);
 
-           //var  _repository.User.Get(x => x.UserName == user.UserName);
-               
-                
-
-            if (user.UserName == "johndoe" && user.Password == "def@123")
+            var dbUser = _repository.User.FirstOrDefault(x => x.UserName == user.UserName && x.Password == user.Password);
+            if (dbUser != null)
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -46,9 +44,22 @@ namespace BookMovie2.Service.Providers
                     signingCredentials: signinCredentials
                 );
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return new AuthenticatedResponse { Token = tokenString, Message = "" };
+                return new AuthenticatedResponse { Token = tokenString, Message = "" , Username = user.UserName };
             }
             return new AuthenticatedResponse {Token="", Message = "NO TOKEN Generated" };
+        }
+
+        public string Signup(Models.User user)
+        {
+           if(user != null)
+            {
+                var dbUser = _mapper.Map<User>(user);
+                _repository.User.Add(dbUser);
+                _repository.Save();
+                return "User is added";
+            }
+           else
+            { return "Invalid user!!!"; }
         }
     }
 }

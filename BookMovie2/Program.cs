@@ -92,7 +92,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                          policy.WithOrigins("https://bookmoviereplicaui.azurewebsites.net", "http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                           ;
                       });
 });
@@ -102,11 +102,15 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseSwaggerUI( c=>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dispatch API V1");
+        c.RoutePrefix = string.Empty;
+    });
+//}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
